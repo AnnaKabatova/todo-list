@@ -3,6 +3,9 @@ from django.urls import reverse_lazy
 from django.views import generic, View
 
 from .models import Task, Tag
+from .forms import TaskForm
+
+
 class TaskListView(generic.ListView):
     model = Task
     context_object_name = "task_list"
