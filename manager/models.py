@@ -1,5 +1,10 @@
 from django.db import models
 
+
+class Tag(models.Model):
+    name = models.CharField(max_length=63)
+
+
 class Task(models.Model):
     content = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
@@ -8,11 +13,7 @@ class Task(models.Model):
     tags = models.ManyToManyField(Tag, related_name="tags")
 
     def __str__(self) -> str:
-        return self.name
+        return self.content
 
     class Meta:
         ordering = ["-is_completed"]
-
-
-class Tag(models.Model):
-    name = models.CharField(max_length=63)
