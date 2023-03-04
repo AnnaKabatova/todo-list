@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views import generic
+from django.views import generic, View
 
 from .models import Task, Tag
 class TaskListView(generic.ListView):
@@ -20,6 +20,26 @@ class TaskUpdateView(generic.UpdateView):
     model = Task
     success_url = reverse_lazy("manager:task-list")
     form_class = TaskForm
+
+
+class TaskUpdateCompletionView(View):
+    def get(self, request, pk):
+        task = Task.objects.get(id=pk)
+        task.is_completed = not task.is_completed
+        task.save()
+        context = {
+            "task": task
+        }
+        return render(request, "manager/task_list.html", context=context)
+    
+    def post(self, request, pk):
+        task = Task.objects.get(id=pk)
+        task.is_completed = request.POST.get("is_completed", not task.is_completed)
+        task.save()
+        context = {
+            "task": task
+        }
+        return render(request, "manager/task_list.html", context=context)
 
 
 class TaskDeleteView(generic.DeleteView):
