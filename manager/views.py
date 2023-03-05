@@ -2,8 +2,8 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic, View
 
-from .models import Task, Tag
 from .forms import TaskForm
+from .models import Task, Tag
 
 
 class TaskListView(generic.ListView):
