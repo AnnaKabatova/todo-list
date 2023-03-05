@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic, View
 
@@ -9,7 +9,7 @@ from .models import Task, Tag
 class TaskListView(generic.ListView):
     model = Task
     context_object_name = "task_list"
-    template_name = "manager/task_lsit.html"
+    template_name = "manager/task_list.html"
     paginate_by = 4
 
 
@@ -30,19 +30,14 @@ class TaskUpdateCompletionView(View):
         task = Task.objects.get(id=pk)
         task.is_completed = not task.is_completed
         task.save()
-        context = {
-            "task": task
-        }
-        return render(request, "manager/task_list.html", context=context)
+        
+        return redirect("manager:task-list")
     
     def post(self, request, pk):
         task = Task.objects.get(id=pk)
         task.is_completed = request.POST.get("is_completed", not task.is_completed)
         task.save()
-        context = {
-            "task": task
-        }
-        return render(request, "manager/task_list.html", context=context)
+        return redirect("manager:task-list")
 
 
 class TaskDeleteView(generic.DeleteView):
