@@ -67,7 +67,7 @@ class TaskUpdateCompletionViewTestCase(TestCase):
         # Testing if task is marked as completed if it wasn't
         response = self.client.post(self.url)
         
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
         
         self.task.refresh_from_db()
         self.assertTrue(self.task.is_completed)
@@ -75,7 +75,7 @@ class TaskUpdateCompletionViewTestCase(TestCase):
         # Check for "Undo" button to make task not completed
         response = self.client.post(self.url)
         
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
         
         self.task.refresh_from_db()
         self.assertFalse(self.task.is_completed)
